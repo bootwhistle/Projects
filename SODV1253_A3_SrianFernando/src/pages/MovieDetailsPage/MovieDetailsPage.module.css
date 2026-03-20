@@ -1,0 +1,344 @@
+/* ── Overlay (full-screen backdrop) ─────────────────── */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px;
+  overflow-y: auto;
+}
+
+/* ── Modal container ────────────────────────────────── */
+
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 860px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Close button ────────────────────────────────────── */
+
+.closeBtn {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 20px;
+  background: rgba(15, 15, 26, 0.9);
+  backdrop-filter: blur(8px);
+  border: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-weight: 600;
+  width: 100%;
+  text-align: left;
+  transition: background var(--transition);
+}
+
+.closeBtn:hover {
+  background: rgba(1, 180, 228, 0.1);
+}
+
+/* ── Loading / error centered state ─────────────────── */
+
+.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 80px 24px;
+  color: var(--text-muted);
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.errorText {
+  color: #f87171;
+  text-align: center;
+  max-width: 360px;
+}
+
+/* ── Content wrapper ─────────────────────────────────── */
+
+.content {
+  position: relative;
+}
+
+/* ── Backdrop (blurred hero image) ──────────────────── */
+
+.backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 300px;
+  background-size: cover;
+  background-position: center top;
+  opacity: 0.15;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+/* ── Hero: poster + info side by side ───────────────── */
+
+.hero {
+  display: flex;
+  gap: 28px;
+  padding: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.poster {
+  width: 180px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  align-self: flex-start;
+}
+
+.noPoster {
+  width: 180px;
+  flex-shrink: 0;
+  aspect-ratio: 2/3;
+  background: var(--bg-elevated);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+.heroInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── Title ───────────────────────────────────────────── */
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+/* ── Meta (year · runtime · language) ───────────────── */
+
+.meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.metaItem {
+  padding: 3px 10px;
+  background: var(--bg-elevated);
+  border-radius: 20px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* ── Rating ──────────────────────────────────────────── */
+
+.rating {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.star {
+  color: var(--gold);
+  font-size: 1.3rem;
+}
+
+.ratingValue {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.ratingMax {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.voteCount {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* ── Genre tags ──────────────────────────────────────── */
+
+.genres {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.genreTag {
+  padding: 4px 12px;
+  background: rgba(1, 180, 228, 0.12);
+  border: 1px solid rgba(1, 180, 228, 0.3);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* ── Overview ────────────────────────────────────────── */
+
+.overview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.overviewText {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* ── Section titles ──────────────────────────────────── */
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Cast section ────────────────────────────────────── */
+
+.castSection {
+  padding: 0 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+  padding-top: 24px;
+}
+
+.castGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 16px;
+}
+
+.castCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.castPhoto {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--bg-elevated);
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+}
+
+.castPhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.castInitials {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(1, 180, 228, 0.1);
+}
+
+.castName {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.castCharacter {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .modal {
+    border-radius: 16px 16px 0 0;
+    max-height: 95vh;
+  }
+
+  .hero {
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .poster,
+  .noPoster {
+    width: 120px;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+
+  .castSection {
+    padding: 20px;
+  }
+}
