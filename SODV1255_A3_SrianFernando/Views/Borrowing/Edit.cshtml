@@ -1,0 +1,85 @@
+@* Views/Borrowing/Edit.cshtml - Edit a borrowing record
+   Primary use case: recording a book return by setting the Return Date
+   When a return date is saved, the book is automatically marked available again *@
+
+@model Borrowing
+@{
+    ViewData["Title"] = "Edit Borrowing";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Index">Borrowings</a></li>
+                <li class="breadcrumb-item active">Edit</li>
+            </ol>
+        </nav>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-pencil me-2"></i>Edit Borrowing</h5>
+            </div>
+            <div class="card-body">
+
+                <form asp-action="Edit" method="post">
+                    @Html.AntiForgeryToken()
+                    <input asp-for="Id" type="hidden" />
+
+                    <div class="mb-3">
+                        <label asp-for="ReaderId" class="form-label"></label>
+                        <select asp-for="ReaderId" asp-items="ViewBag.Readers" class="form-select">
+                            <option value="">-- Select a reader --</option>
+                        </select>
+                        <span asp-validation-for="ReaderId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="BookId" class="form-label"></label>
+                        <select asp-for="BookId" asp-items="ViewBag.Books" class="form-select">
+                            <option value="">-- Select a book --</option>
+                        </select>
+                        <span asp-validation-for="BookId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="BorrowDate" class="form-label"></label>
+                            <input asp-for="BorrowDate" class="form-control" type="date" />
+                            <span asp-validation-for="BorrowDate" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="DueDate" class="form-label"></label>
+                            <input asp-for="DueDate" class="form-control" type="date" />
+                            <span asp-validation-for="DueDate" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    @* Return Date - leave blank if book not yet returned *@
+                    <div class="mb-4">
+                        <label asp-for="ReturnDate" class="form-label"></label>
+                        <input asp-for="ReturnDate" class="form-control" type="date" />
+                        <div class="form-text">
+                            Leave blank if the book has not been returned yet.
+                            Setting a return date will mark the book as available again.
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle me-1"></i>Save Changes
+                        </button>
+                        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

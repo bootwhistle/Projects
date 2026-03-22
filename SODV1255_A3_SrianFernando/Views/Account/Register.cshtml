@@ -1,0 +1,66 @@
+@* Views/Account/Register.cshtml - New user registration page
+   Collects full name, email, password (with confirmation)
+   On success, automatically logs the user in and redirects to dashboard *@
+
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-body p-4">
+
+                <h3 class="card-title text-center mb-4">
+                    <i class="bi bi-person-plus-fill me-2 text-primary"></i>Create Account
+                </h3>
+
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+
+                <form asp-action="Register" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label asp-for="FullName" class="form-label"></label>
+                        <input asp-for="FullName" class="form-control" placeholder="Jane Doe" />
+                        <span asp-validation-for="FullName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" placeholder="you@example.com" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" class="form-control" placeholder="At least 6 characters" />
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="ConfirmPassword" class="form-label"></label>
+                        <input asp-for="ConfirmPassword" class="form-control" placeholder="Repeat password" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-check-circle me-1"></i>Register
+                    </button>
+                </form>
+
+                <hr />
+                <p class="text-center mb-0 small">
+                    Already have an account?
+                    <a asp-controller="Account" asp-action="Login">Sign in</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

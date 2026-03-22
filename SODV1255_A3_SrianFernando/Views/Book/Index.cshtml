@@ -1,0 +1,78 @@
+@* Views/Book/Index.cshtml - Displays all books in a sortable table
+   Each row has links to Details, Edit, and Delete actions *@
+
+@model List<Book>
+@{
+    ViewData["Title"] = "Books";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-journals me-2 text-primary"></i>Books</h2>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i>Add Book
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No books in the library yet. <a asp-action="Create">Add the first one.</a>
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Year</th>
+                        <th>ISBN</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var book in Model)
+                    {
+                        <tr>
+                            <td>@book.Id</td>
+                            <td><strong>@book.Title</strong></td>
+                            <td>@book.Author</td>
+                            <td>@book.YearPublished</td>
+                            <td>@(book.ISBN ?? "—")</td>
+                            <td>
+                                @if (book.IsAvailable)
+                                {
+                                    <span class="badge bg-success">Available</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Borrowed</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="Details" asp-route-id="@book.Id"
+                                   class="btn btn-sm btn-outline-secondary me-1" title="Details">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@book.Id"
+                                   class="btn btn-sm btn-outline-primary me-1" title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@book.Id"
+                                   class="btn btn-sm btn-outline-danger" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <p class="text-muted small mt-2">@Model.Count book(s) total.</p>
+}

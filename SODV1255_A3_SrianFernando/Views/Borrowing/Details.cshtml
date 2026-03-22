@@ -1,0 +1,85 @@
+@* Views/Borrowing/Details.cshtml - Read-only details for one borrowing transaction *@
+
+@model Borrowing
+@{
+    ViewData["Title"] = "Borrowing Details";
+}
+
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Index">Borrowings</a></li>
+        <li class="breadcrumb-item active">Record #@Model.Id</li>
+    </ol>
+</nav>
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card @(Model.IsOverdue ? "border-danger" : "")">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-arrow-left-right me-2"></i>Borrowing #@Model.Id</h5>
+                @if (Model.ReturnDate.HasValue)
+                {
+                    <span class="badge bg-success fs-6">Returned</span>
+                }
+                else if (Model.IsOverdue)
+                {
+                    <span class="badge bg-danger fs-6">Overdue</span>
+                }
+                else
+                {
+                    <span class="badge bg-primary fs-6">Active</span>
+                }
+            </div>
+            <div class="card-body">
+
+                <dl class="row">
+                    <dt class="col-sm-4">Reader</dt>
+                    <dd class="col-sm-8">@(Model.Reader?.FullName ?? "Unknown")</dd>
+
+                    <dt class="col-sm-4">Book</dt>
+                    <dd class="col-sm-8">@(Model.Book?.Title ?? "Unknown")</dd>
+
+                    <dt class="col-sm-4">Author</dt>
+                    <dd class="col-sm-8">@(Model.Book?.Author ?? "—")</dd>
+
+                    <dt class="col-sm-4">Borrow Date</dt>
+                    <dd class="col-sm-8">@Model.BorrowDate.ToString("MMMM dd, yyyy")</dd>
+
+                    <dt class="col-sm-4">Due Date</dt>
+                    <dd class="col-sm-8 @(Model.IsOverdue ? "text-danger fw-bold" : "")">
+                        @Model.DueDate.ToString("MMMM dd, yyyy")
+                        @if (Model.IsOverdue)
+                        {
+                            <span class="badge bg-danger ms-1">OVERDUE</span>
+                        }
+                    </dd>
+
+                    <dt class="col-sm-4">Return Date</dt>
+                    <dd class="col-sm-8">
+                        @if (Model.ReturnDate.HasValue)
+                        {
+                            @Model.ReturnDate.Value.ToString("MMMM dd, yyyy")
+                        }
+                        else
+                        {
+                            <span class="text-muted fst-italic">Not yet returned</span>
+                        }
+                    </dd>
+                </dl>
+
+                <div class="d-flex gap-2 mt-3">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                        <i class="bi bi-pencil me-1"></i>Edit / Return
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">
+                        <i class="bi bi-trash me-1"></i>Delete
+                    </a>
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Back to List
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

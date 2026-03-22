@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "SODV1255_A3_SrianFernando": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "",
+      "applicationUrl": "https://localhost:7100;http://localhost:5100",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

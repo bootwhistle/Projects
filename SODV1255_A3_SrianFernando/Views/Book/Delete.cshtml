@@ -1,0 +1,57 @@
+@* Views/Book/Delete.cshtml - Confirmation page before permanently deleting a book *@
+
+@model Book
+@{
+    ViewData["Title"] = "Delete Book";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Index">Books</a></li>
+                <li class="breadcrumb-item active">Delete</li>
+            </ol>
+        </nav>
+
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="bi bi-trash me-2"></i>Confirm Delete</h5>
+            </div>
+            <div class="card-body">
+
+                <p>Are you sure you want to permanently delete this book?</p>
+
+                <dl class="row">
+                    <dt class="col-sm-4">Title</dt>
+                    <dd class="col-sm-8">@Model.Title</dd>
+
+                    <dt class="col-sm-4">Author</dt>
+                    <dd class="col-sm-8">@Model.Author</dd>
+
+                    <dt class="col-sm-4">Year</dt>
+                    <dd class="col-sm-8">@Model.YearPublished</dd>
+                </dl>
+
+                <div class="alert alert-warning small">
+                    <i class="bi bi-exclamation-triangle me-1"></i>
+                    This action cannot be undone.
+                </div>
+
+                <form asp-action="Delete" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash me-1"></i>Yes, Delete
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>

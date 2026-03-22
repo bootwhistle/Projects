@@ -1,0 +1,130 @@
+@* Views/Shared/_Layout.cshtml - Master layout used by all pages
+   Provides the navigation bar, flash messages, Bootstrap 5, and footer
+   Individual page content is injected at @RenderBody() *@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - LMS</title>
+
+    <!-- Bootstrap 5 CSS from CDN -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+
+    <style>
+        /* Sidebar / navbar accent colour */
+        .navbar { background-color: #1a3c5e !important; }
+        .navbar-brand, .nav-link { color: #ffffff !important; }
+        .nav-link:hover { color: #aed6f1 !important; }
+        body { background-color: #f4f6f9; }
+        .card { border: none; box-shadow: 0 2px 6px rgba(0,0,0,.08); }
+        .btn-primary { background-color: #1a3c5e; border-color: #1a3c5e; }
+        .btn-primary:hover { background-color: #154d75; }
+        footer { font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+
+    @* ── Navigation Bar ──────────────────────────────────────────── *@
+    <nav class="navbar navbar-expand-lg mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold" asp-controller="Dashboard" asp-action="Index">
+                <i class="bi bi-book-half me-2"></i>LMS
+            </a>
+
+            @* Only show nav links when a user is logged in *@
+            @if (Context.Session.GetInt32("UserId") != null)
+            {
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navMenu">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Dashboard" asp-action="Index">
+                                <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Book" asp-action="Index">
+                                <i class="bi bi-journals me-1"></i>Books
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Reader" asp-action="Index">
+                                <i class="bi bi-people me-1"></i>Readers
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Borrowing" asp-action="Index">
+                                <i class="bi bi-arrow-left-right me-1"></i>Borrowings
+                            </a>
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle me-1"></i>
+                                @Context.Session.GetString("UserName")
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <form asp-controller="Account" asp-action="Logout" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <button class="dropdown-item" type="submit">
+                                            <i class="bi bi-box-arrow-right me-1"></i>Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            }
+        </div>
+    </nav>
+
+    @* ── Flash Messages (TempData) ──────────────────────────────── *@
+    <div class="container">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>@TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+    </div>
+
+    @* ── Page Content ────────────────────────────────────────────── *@
+    <main class="container pb-5">
+        @RenderBody()
+    </main>
+
+    @* ── Footer ──────────────────────────────────────────────────── *@
+    <footer class="text-center text-muted py-3 border-top mt-4">
+        <div class="container">
+            Library Management System &mdash; SODV1255 Assignment 3 &mdash; Srian Fernando
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS bundle (includes Popper for dropdowns) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    @* Render any page-specific scripts defined in views via @section Scripts *@
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

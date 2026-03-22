@@ -1,0 +1,76 @@
+@* Views/Book/Edit.cshtml - Form to update an existing book's details *@
+
+@model Book
+@{
+    ViewData["Title"] = "Edit Book";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Index">Books</a></li>
+                <li class="breadcrumb-item active">Edit</li>
+            </ol>
+        </nav>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-pencil me-2"></i>Edit Book</h5>
+            </div>
+            <div class="card-body">
+
+                <form asp-action="Edit" method="post">
+                    @Html.AntiForgeryToken()
+
+                    @* Hidden ID ensures the controller can find the correct book *@
+                    <input asp-for="Id" type="hidden" />
+
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Author" class="form-label"></label>
+                        <input asp-for="Author" class="form-control" />
+                        <span asp-validation-for="Author" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="YearPublished" class="form-label"></label>
+                            <input asp-for="YearPublished" class="form-control" type="number" />
+                            <span asp-validation-for="YearPublished" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="ISBN" class="form-label"></label>
+                            <input asp-for="ISBN" class="form-control" />
+                            <span asp-validation-for="ISBN" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 form-check">
+                        <input asp-for="IsAvailable" class="form-check-input" />
+                        <label asp-for="IsAvailable" class="form-check-label">Available for borrowing</label>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle me-1"></i>Save Changes
+                        </button>
+                        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
