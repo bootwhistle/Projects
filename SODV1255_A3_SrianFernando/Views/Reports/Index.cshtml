@@ -1,0 +1,192 @@
+@* Views/Reports/Index.cshtml - Borrowing report with filters
+   Staff can filter by date range, status (active/returned/overdue), and reader
+   Shows a summary row with counts and total fines outstanding *@
+
+@model List<Borrowing>
+@{
+    ViewData["Title"] = "Reports";
+}
+
+<h2 class="mb-4"><i class="bi bi-bar-chart-line me-2 text-primary"></i>Reports</h2>
+
+@* ── Filter Form ── *@
+<div class="card mb-4">
+    <div class="card-header">
+        <h6 class="mb-0"><i class="bi bi-funnel me-1"></i>Filter Borrowings</h6>
+    </div>
+    <div class="card-body">
+        <form method="get" asp-action="Index">
+            <div class="row g-3 align-items-end">
+
+                <div class="col-md-3">
+                    <label class="form-label">Borrow Date From</label>
+                    <input type="date" name="fromDate" value="@ViewBag.FromDate" class="form-control" />
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Borrow Date To</label>
+                    <input type="date" name="toDate" value="@ViewBag.ToDate" class="form-control" />
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Status</label>
+                    <select name="status" class="form-select">
+                        <option value="" selected="@(ViewBag.Status == null)">All</option>
+                        <option value="active"   selected="@(ViewBag.Status == "active")">Active</option>
+                        <option value="returned" selected="@(ViewBag.Status == "returned")">Returned</option>
+                        <option value="overdue"  selected="@(ViewBag.Status == "overdue")">Overdue</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Reader</label>
+                    <select name="readerId" asp-items="ViewBag.Readers" class="form-select">
+                        <option value="">All Readers</option>
+                    </select>
+                </div>
+
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+
+            </div>
+
+            @* Clear filters link - only show if any filter is active *@
+            @if (ViewBag.FromDate != null || ViewBag.ToDate != null ||
+                 ViewBag.Status != null || ViewBag.ReaderId != null)
+            {
+                <div class="mt-2">
+                    <a asp-action="Index" class="text-muted small">
+                        <i class="bi bi-x-circle me-1"></i>Clear all filters
+                    </a>
+                </div>
+            }
+        </form>
+    </div>
+</div>
+
+@* ── Summary Cards ── *@
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-2">
+        <div class="card text-center">
+            <div class="card-body py-2">
+                <div class="small text-muted">Total</div>
+                <div class="fs-4 fw-bold">@ViewBag.TotalRecords</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-2">
+        <div class="card text-center">
+            <div class="card-body py-2">
+                <div class="small text-muted">Active</div>
+                <div class="fs-4 fw-bold text-primary">@ViewBag.TotalActive</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-2">
+        <div class="card text-center">
+            <div class="card-body py-2">
+                <div class="small text-muted">Returned</div>
+                <div class="fs-4 fw-bold text-success">@ViewBag.TotalReturned</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-2">
+        <div class="card text-center">
+            <div class="card-body py-2">
+                <div class="small text-muted">Overdue</div>
+                <div class="fs-4 fw-bold text-danger">@ViewBag.TotalOverdue</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center @(ViewBag.TotalFines > 0 ? "border-danger" : "")">
+            <div class="card-body py-2">
+                <div class="small text-muted">Outstanding Fines</div>
+                <div class="fs-4 fw-bold @(ViewBag.TotalFines > 0 ? "text-danger" : "text-muted")">
+                    $@(((decimal)ViewBag.TotalFines).ToString("F2"))
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* ── Results Table ── *@
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No borrowing records match the selected filters.</div>
+}
+else
+{
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Reader</th>
+                        <th>Book</th>
+                        <th>Borrow Date</th>
+                        <th>Due Date</th>
+                        <th>Return Date</th>
+                        <th>Status</th>
+                        <th>Overdue Days</th>
+                        <th>Fine</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var b in Model)
+                    {
+                        <tr class="@(b.IsOverdue ? "table-danger" : "")">
+                            <td>@b.Id</td>
+                            <td>@(b.Reader?.FullName ?? "—")</td>
+                            <td>@(b.Book?.Title ?? "—")</td>
+                            <td>@b.BorrowDate.ToString("MMM dd, yyyy")</td>
+                            <td>@b.DueDate.ToString("MMM dd, yyyy")</td>
+                            <td>
+                                @if (b.ReturnDate.HasValue)
+                                {
+                                    @b.ReturnDate.Value.ToString("MMM dd, yyyy")
+                                }
+                                else
+                                {
+                                    <span class="text-muted">—</span>
+                                }
+                            </td>
+                            <td>
+                                @if (b.ReturnDate.HasValue)
+                                {
+                                    <span class="badge bg-success">Returned</span>
+                                }
+                                else if (b.IsOverdue)
+                                {
+                                    <span class="badge bg-danger">Overdue</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary">Active</span>
+                                }
+                            </td>
+                            <td class="@(b.OverdueDays > 0 ? "text-danger fw-bold" : "text-muted")">
+                                @(b.OverdueDays > 0 ? b.OverdueDays.ToString() : "—")
+                            </td>
+                            <td class="@(b.OverdueFine > 0 ? "text-danger fw-bold" : "text-muted")">
+                                @(b.OverdueFine > 0 ? "$" + b.OverdueFine.ToString("F2") : "—")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                @* Totals footer row *@
+                <tfoot class="table-secondary fw-bold">
+                    <tr>
+                        <td colspan="7" class="text-end">Totals (@Model.Count records):</td>
+                        <td>@Model.Sum(b => b.OverdueDays) days</td>
+                        <td>$@Model.Sum(b => b.OverdueFine).ToString("F2")</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+}

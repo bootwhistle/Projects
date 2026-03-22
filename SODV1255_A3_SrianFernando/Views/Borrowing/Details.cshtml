@@ -65,6 +65,30 @@
                             <span class="text-muted fst-italic">Not yet returned</span>
                         }
                     </dd>
+
+                    <dt class="col-sm-4">Overdue Days</dt>
+                    <dd class="col-sm-8">
+                        @if (Model.OverdueDays > 0)
+                        {
+                            <span class="text-danger fw-bold">@Model.OverdueDays day(s)</span>
+                        }
+                        else
+                        {
+                            <span class="text-success">None</span>
+                        }
+                    </dd>
+
+                    <dt class="col-sm-4">Fine (@Html.Raw("$0.10/day"))</dt>
+                    <dd class="col-sm-8">
+                        @if (Model.OverdueFine > 0)
+                        {
+                            <span class="text-danger fw-bold fs-5">$@Model.OverdueFine.ToString("F2")</span>
+                        }
+                        else
+                        {
+                            <span class="text-success">$0.00</span>
+                        }
+                    </dd>
                 </dl>
 
                 <div class="d-flex gap-2 mt-3">

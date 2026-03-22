@@ -34,6 +34,7 @@ else
                         <th>Due Date</th>
                         <th>Return Date</th>
                         <th>Status</th>
+                        <th>Fine</th>
                         <th class="text-end">Actions</th>
                     </tr>
                 </thead>
@@ -69,6 +70,9 @@ else
                                 {
                                     <span class="badge bg-primary">Active</span>
                                 }
+                            </td>
+                            <td class="@(b.OverdueFine > 0 ? "text-danger fw-bold" : "text-muted")">
+                                @(b.OverdueFine > 0 ? "$" + b.OverdueFine.ToString("F2") : "—")
                             </td>
                             <td class="text-end">
                                 <a asp-action="Details" asp-route-id="@b.Id"
