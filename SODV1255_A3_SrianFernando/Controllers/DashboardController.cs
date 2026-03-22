@@ -23,6 +23,7 @@ namespace SODV1255_A3_SrianFernando.Controllers
             ViewBag.ActiveBorrowings = allBorrowings.Count(b => b.ReturnDate == null);
             ViewBag.OverdueBorrowings = allBorrowings.Count(b => b.IsOverdue);
             ViewBag.AvailableBooks = BookRepository.GetAll().Count(b => b.IsAvailable);
+            ViewBag.TotalFines = allBorrowings.Sum(b => b.OverdueFine);
 
             return View();
         }
