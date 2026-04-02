@@ -1,0 +1,43 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px;
+}
+
+/* ── Skeleton loading cards ────────────────────── */
+
+.skeleton {
+  aspect-ratio: 2/3;
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-elevated) 50%, var(--bg-card) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Empty / error state ───────────────────────── */
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.stateIcon {
+  font-size: 3rem;
+}
+
+.stateText {
+  color: var(--text-muted);
+  font-size: 1rem;
+  max-width: 360px;
+  line-height: 1.6;
+}
