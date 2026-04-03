@@ -9,12 +9,16 @@
  *   totalPages   {number}   — total number of pages
  *   onPageChange {function} — called with the new page number
  */
+import { memo, useMemo } from 'react';
 import styles from './Pagination.module.css';
 
-export default function Pagination({ currentPage, totalPages, onPageChange }) {
+function Pagination({ currentPage, totalPages, onPageChange }) {
   if (totalPages <= 1) return null;
 
-  const pages = buildPageList(currentPage, totalPages);
+  const pages = useMemo(
+    () => buildPageList(currentPage, totalPages),
+    [currentPage, totalPages]
+  );
 
   return (
     <nav className={styles.pagination} aria-label="Movie list pagination">
@@ -56,6 +60,8 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
     </nav>
   );
 }
+
+export default memo(Pagination);
 
 /**
  * Generates a compact page list like: [1, '...', 4, 5, 6, '...', 20]

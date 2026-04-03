@@ -14,7 +14,7 @@
  *   - /movie/:id          → full movie details (genres, overview, rating)
  *   - /movie/:id/credits  → top 10 cast members with photos
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getMovieDetails, getMovieCredits } from '../../api/tmdb';
@@ -69,9 +69,9 @@ export default function MovieDetailsPage() {
   }, [id]);
 
   // ── Close on backdrop click ───────────────────────────────────────────
-  const handleBackdropClick = (e) => {
+  const handleBackdropClick = useCallback((e) => {
     if (e.target === e.currentTarget) navigate('/');
-  };
+  }, [navigate]);
 
   // ── Helpers ───────────────────────────────────────────────────────────
   const year       = movie?.release_date?.split('-')[0] ?? 'N/A';

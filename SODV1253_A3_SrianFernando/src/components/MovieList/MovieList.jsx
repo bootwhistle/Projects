@@ -8,10 +8,11 @@
  *   error       {string}   — error message to display (or null)
  *   onMovieClick {function} — passed down to each MovieCard
  */
+import { memo } from 'react';
 import MovieCard from '../MovieCard/MovieCard';
 import styles from './MovieList.module.css';
 
-export default function MovieList({ movies, loading, error, onMovieClick }) {
+function MovieList({ movies, loading, error, onMovieClick }) {
   if (loading) {
     return (
       <div className={styles.grid}>
@@ -48,3 +49,5 @@ export default function MovieList({ movies, loading, error, onMovieClick }) {
     </div>
   );
 }
+
+export default memo(MovieList);

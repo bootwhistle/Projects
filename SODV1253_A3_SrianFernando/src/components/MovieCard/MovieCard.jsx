@@ -8,11 +8,12 @@
  *   movie   {object}   — TMDB movie object
  *   onClick {function} — called with movie.id when the card is activated
  */
+import { memo } from 'react';
 import styles from './MovieCard.module.css';
 
 const IMG_BASE = 'https://image.tmdb.org/t/p/w342';
 
-export default function MovieCard({ movie, onClick }) {
+function MovieCard({ movie, onClick }) {
   const posterUrl = movie.poster_path ? `${IMG_BASE}${movie.poster_path}` : null;
   const year      = movie.release_date?.split('-')[0] ?? 'N/A';
   const rating    = movie.vote_average != null ? movie.vote_average.toFixed(1) : 'N/A';
@@ -59,6 +60,8 @@ export default function MovieCard({ movie, onClick }) {
     </article>
   );
 }
+
+export default memo(MovieCard);
 
 /** Returns a CSS module class name based on the rating value. */
 function getRatingClass(rating) {

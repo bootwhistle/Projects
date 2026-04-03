@@ -6,9 +6,10 @@
  *   selected {string}   — currently selected genre id ('' for all)
  *   onChange {function} — called with new genre id string
  */
+import { memo } from 'react';
 import styles from './GenreFilter.module.css';
 
-export default function GenreFilter({ genres, selected, onChange }) {
+function GenreFilter({ genres, selected, onChange }) {
   return (
     <div className={styles.wrapper}>
       <label htmlFor="genre-select" className={styles.label}>
@@ -30,3 +31,5 @@ export default function GenreFilter({ genres, selected, onChange }) {
     </div>
   );
 }
+
+export default memo(GenreFilter);

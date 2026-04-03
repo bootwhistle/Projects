@@ -104,13 +104,13 @@ export default function HomePage() {
     [navigate]
   );
 
-  const handleGenreChange = (genreId) => {
+  const handleGenreChange = useCallback((genreId) => {
     setSelectedGenre(genreId);
-  };
+  }, []);
 
-  const handleQueryChange = (value) => {
+  const handleQueryChange = useCallback((value) => {
     setQuery(value);
-  };
+  }, []);
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (

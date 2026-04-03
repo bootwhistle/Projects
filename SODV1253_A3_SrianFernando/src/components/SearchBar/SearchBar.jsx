@@ -6,9 +6,10 @@
  *   onChange   {function} — called with the new string value
  *   placeholder {string}  — input placeholder text
  */
+import { memo } from 'react';
 import styles from './SearchBar.module.css';
 
-export default function SearchBar({
+function SearchBar({
   value,
   onChange,
   placeholder = 'Search movies by title…',
@@ -39,3 +40,5 @@ export default function SearchBar({
     </div>
   );
 }
+
+export default memo(SearchBar);

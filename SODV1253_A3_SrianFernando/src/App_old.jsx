@@ -1,12 +1,14 @@
 /**
- * App.jsx 
+ * App_old.jsx — original App.jsx from Assignment 3 (unchanged copy)
+ * Kept for comparison. App.jsx itself had no performance issues.
+ * The performance fixes were in the component and page files.
  *
- * Architecture decision:
- *   HomePage is ALWAYS rendered 
+ * App.jsx architecture:
+ *   HomePage is ALWAYS rendered
  *   When the URL matches /movie/:id, React Router also renders MovieDetailsPage.
  *   MovieDetailsPage uses React.createPortal to render a full-screen overlay
  *   into #portal-root (outside #root), layering on top of the home page.
- *   
+ *
  */
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage/HomePage';
